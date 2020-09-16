@@ -13,9 +13,8 @@ public class BwMgr {
     private final HashSet<String> teamNames = new HashSet<>();
     private final ArrayList<BwTeam> teams = new ArrayList<>();
     private final Random rand = new Random();
-    private final ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
 
-    Boolean enabled;
+    boolean enabled;
     int mode = 1;
 
     BwMgr(Bedwars bwPlugin){
@@ -33,6 +32,7 @@ public class BwMgr {
 
     public void assignTeams() {
         HashSet<Integer> teamCounter = new HashSet<>();
+        ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
         switch (mode) {
             case 1:
                 while (teamCounter.size() < Bukkit.getOnlinePlayers().size()) {

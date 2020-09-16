@@ -41,22 +41,25 @@ public class BwCmd implements CommandExecutor {
 
                 } else if (args[0].equalsIgnoreCase("start")) {
                     if (bwMgr.enabled) {
+
+                        bwMgr.createTeams();
+                        bwMgr.assignTeams();
+
+                        if (args.length == 2) {
+                            if (args[1].equals("1") || args[1].equals("2") || args[1].equals("3") || args[1].equals("4")) {
+                                bwMgr.mode = Integer.parseInt(args[1]);
+                            } else {
+                                sendInvalid(sender);
+                            }
+                        }
+
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             countDown(player, 5);
                         }
+
                     } else {
                         sender.sendMessage(ChatColor.RED + "Bedwars plugin is disabled!");
                     }
-                    if (args.length == 2) {
-                        if (args[1].equals("1") || args[1].equals("2") || args[1].equals("3") || args[1].equals("4")) {
-                            bwMgr.mode = Integer.parseInt(args[1]);
-                        } else {
-                            sendInvalid(sender);
-                        }
-                    }
-                    bwMgr.createTeams();
-                    bwMgr.assignTeams();
-
 
                 } else {
                     sendInvalid(sender);
