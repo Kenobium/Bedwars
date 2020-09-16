@@ -1,0 +1,9 @@
+main: tk.thesenate.bedwars.Bedwars
+name: Bedwars
+version: 0.0.1
+description: A Bedwars plugin
+api-version: 1.16
+author: Kenobium
+commands:
+  bw:
+    description: Manage a Bedwars game.
