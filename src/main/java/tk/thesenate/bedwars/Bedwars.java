@@ -12,11 +12,12 @@ public class Bedwars extends JavaPlugin {
 
     private FileConfiguration config;
     private FileConfiguration data;
-    BwMgr bwMgr = new BwMgr(this);
+    BwMgr bwMgr;
 
     public void onEnable() {
         if (!getDataFolder().exists()) getDataFolder().mkdir();
         createYaml();
+        bwMgr = new BwMgr(this);
         this.getCommand("bw").setExecutor(new BwCmd(bwMgr, this));
         getServer().getPluginManager().registerEvents(new BwListener(bwMgr, this), this);
     }

@@ -54,6 +54,9 @@ public class BwCmd implements CommandExecutor {
                             sendInvalid(sender);
                         }
                     }
+                    bwMgr.createTeams();
+                    bwMgr.assignTeams();
+
 
                 } else {
                     sendInvalid(sender);
