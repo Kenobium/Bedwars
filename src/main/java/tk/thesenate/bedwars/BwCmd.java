@@ -40,10 +40,7 @@ public class BwCmd implements CommandExecutor {
                     }
 
                 } else if (args[0].equalsIgnoreCase("start")) {
-                    if (bwMgr.enabled) {
-
-                        bwMgr.createTeams();
-                        bwMgr.assignTeams();
+                    if (bwMgr.enabled && !bwMgr.gameOngoing) {
 
                         if (args.length == 2) {
                             if (args[1].equals("1") || args[1].equals("2") || args[1].equals("3") || args[1].equals("4")) {
@@ -53,12 +50,24 @@ public class BwCmd implements CommandExecutor {
                             }
                         }
 
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            countDown(player, 5);
+                        if (Bukkit.getOnlinePlayers().size() / (double) bwMgr.mode <= bwMgr.getTeams().size() / (double) bwMgr.mode) {
+                            bwMgr.createTeams();
+                            bwMgr.randomlyAssignTeams(sender);
+
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                countDown(player, 5);
+                            }
+
+                            bwMgr.gameOngoing = true;
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "There are too many players online to start this match!");
                         }
 
-                    } else {
+
+                    } else if (!bwMgr.enabled) {
                         sender.sendMessage(ChatColor.RED + "Bedwars plugin is disabled!");
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "There is already a game in progress!");
                     }
 
                 } else {
