@@ -70,6 +70,8 @@ public class BwCmd implements CommandExecutor {
                         sender.sendMessage(ChatColor.RED + "There is already a game in progress!");
                     }
 
+                } else if (args[0].equalsIgnoreCase("mark")) {
+
                 } else {
                     sendInvalid(sender);
                 }

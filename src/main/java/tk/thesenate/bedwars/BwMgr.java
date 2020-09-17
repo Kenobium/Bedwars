@@ -49,6 +49,7 @@ public class BwMgr {
                     BwTeam team = teams.get(teamCounterArray.get(i));
                     team.addPlayer(onlinePlayers.get(i));
                 }
+                break;
             case 2:
                 if (onlinePlayers.size() % 2 != 0) {
                     sender.sendMessage(ChatColor.YELLOW + "There are an odd number of players; one person will be on their own.");
@@ -65,7 +66,7 @@ public class BwMgr {
                         team.addPlayer(onlinePlayers.get(i + 1));
                     }
                 }
-
+                break;
             case 3:
                 if (onlinePlayers.size() % 3 != 0) {
                     sender.sendMessage(ChatColor.YELLOW + "Teams will be uneven.");
@@ -85,6 +86,7 @@ public class BwMgr {
                         team.addPlayer(onlinePlayers.get(i + 2));
                     }
                 }
+                break;
             case 4:
                 if (onlinePlayers.size() % 4 != 0) {
                     sender.sendMessage(ChatColor.YELLOW + "Teams will be uneven.");
@@ -107,6 +109,7 @@ public class BwMgr {
                         team.addPlayer(onlinePlayers.get(i + 3));
                     }
                 }
+                break;
         }
         for (BwTeam team : teams) {
             Bukkit.broadcastMessage(team.getPlayers().toString());
