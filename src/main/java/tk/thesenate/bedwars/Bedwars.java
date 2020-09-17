@@ -34,6 +34,7 @@ public class Bedwars extends JavaPlugin {
             configFile.getParentFile().mkdirs();
             saveResource("config.yml", false);
         }
+
         if (!dataFile.exists()) {
             dataFile.getParentFile().mkdirs();
             saveResource("data.yml", false);

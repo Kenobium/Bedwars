@@ -2,8 +2,11 @@ package tk.thesenate.bedwars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -13,8 +16,12 @@ public class BwMgr {
     private final ArrayList<BwTeam> teams = new ArrayList<>();
     private final Random rand = new Random();
 
+    final ItemStack markingTool = new ItemStack(Material.BLAZE_ROD);
+    final HashMap<BwTeam, Location> basePoints = new HashMap<>();
+
     boolean enabled;
     boolean gameOngoing = false;
+    boolean marking = false;
     int mode = 1;
 
     BwMgr(Bedwars bwPlugin) {
@@ -29,8 +36,10 @@ public class BwMgr {
     }
 
     public void createTeams() {
-        for (String teamName : teamNames) {
-            teams.add(new BwTeam(teamName));
+        if (teams.isEmpty()) {
+            for (String teamName : teamNames) {
+                teams.add(new BwTeam(teamName));
+            }
         }
     }
 
@@ -110,9 +119,6 @@ public class BwMgr {
                     }
                 }
                 break;
-        }
-        for (BwTeam team : teams) {
-            Bukkit.broadcastMessage(team.getPlayers().toString());
         }
 
     }

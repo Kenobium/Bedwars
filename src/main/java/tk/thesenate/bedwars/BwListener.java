@@ -2,6 +2,7 @@ package tk.thesenate.bedwars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +35,9 @@ public class BwListener implements Listener {
         if (bwMgr.enabled) {
             int numPlayers = Bukkit.getOnlinePlayers().size();
             if (numPlayers == 1) {
-                e.setJoinMessage(ChatColor.GOLD + e.getPlayer().getName().toString() + ChatColor.GREEN + " joined! You are the only one here.");
+                e.setJoinMessage(ChatColor.GOLD + e.getPlayer().getName() + ChatColor.GREEN + " joined! You are the only one here.");
             } else {
-                e.setJoinMessage(ChatColor.GOLD + e.getPlayer().getName().toString() + ChatColor.GREEN + " joined! There are now " + ChatColor.GOLD + numPlayers + ChatColor.GREEN + " players online.");
+                e.setJoinMessage(ChatColor.GOLD + e.getPlayer().getName() + ChatColor.GREEN + " joined! There are now " + ChatColor.GOLD + numPlayers + ChatColor.GREEN + " players online.");
             }
         }
 
@@ -96,7 +98,20 @@ public class BwListener implements Listener {
                     e.setDeathMessage(ChatColor.GOLD + playerName + ChatColor.GREEN + " was beaned by " + ChatColor.GOLD + killer.getName() + ChatColor.GREEN + ".");
                 }
                 break;
+
         }
+
+    }
+
+    @EventHandler
+    public void onPlayerRespawnEvent(PlayerRespawnEvent e) {
+        Location teamSpawn = e.getPlayer().getWorld().getSpawnLocation();
+        for (BwTeam t : bwMgr.getTeams()) {
+            if (t.getPlayers().contains(e.getPlayer())) {
+                teamSpawn = t.getSpawnPoint();
+            }
+        }
+        e.setRespawnLocation(teamSpawn);
     }
 
     @EventHandler
@@ -105,6 +120,11 @@ public class BwListener implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && disallowedBlocks.contains(e.getClickedBlock().getType())) {
             e.setCancelled(true);
         }
+        if (bwMgr.marking && !Marker.markedFlag && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && bwMgr.markingTool.equals(e.getItem())) {
+            bwMgr.getTeams().get(Marker.currentIndex - 1).setSpawnPoint(e.getClickedBlock().getLocation());
+            Marker.markedFlag = true;
+        }
+
     }
 
     @EventHandler
@@ -119,5 +139,6 @@ public class BwListener implements Listener {
     public void onPlayerBedEnterEvent(PlayerBedEnterEvent e) {
         e.setCancelled(true);
     }
+
 
 }

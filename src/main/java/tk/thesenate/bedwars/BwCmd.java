@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BwCmd implements CommandExecutor {
@@ -16,6 +17,9 @@ public class BwCmd implements CommandExecutor {
     BwCmd(BwMgr bwMgr, Bedwars bwPlugin) {
         this.bwMgr = bwMgr;
         this.bwPlugin = bwPlugin;
+        ItemMeta mToolMeta = bwMgr.markingTool.getItemMeta();
+        mToolMeta.setDisplayName(ChatColor.GREEN + "Base Marking Tool");
+        bwMgr.markingTool.setItemMeta(mToolMeta);
     }
 
     @Override
@@ -71,6 +75,22 @@ public class BwCmd implements CommandExecutor {
                     }
 
                 } else if (args[0].equalsIgnoreCase("mark")) {
+
+                    if (bwMgr.marking) {
+                        sender.sendMessage(ChatColor.RED + "You are already marking!");
+                    } else {
+                        bwMgr.createTeams();
+                        if (sender instanceof Player) {
+                            bwMgr.marking = true;
+
+                            sender.sendMessage((ChatColor.GREEN + "Marking started. You've been given a cool marking tool."));
+                            ((Player) sender).getInventory().addItem(bwMgr.markingTool);
+                            new Marker(bwMgr, sender).runTaskTimer(bwPlugin, 0L, 1L);
+
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "This command must be run as a player.");
+                        }
+                    }
 
                 } else {
                     sendInvalid(sender);
